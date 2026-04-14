@@ -317,3 +317,31 @@ export const leaveFetchData = (communityName) => async (dispatch) => {
     });
   }
 };
+
+export const createNewCommunityAction = (communityData) => async (dispatch) => {
+  try {
+    const { error, data } = await api.createCommunity(communityData);
+    if (error) {
+      throw new Error(error);
+    }
+    dispatch({
+      type: types.CREATE_COMMUNITY_SUCCESS,
+      payload: data,
+      meta: {
+        requiresAuth: true,
+      },
+    });
+    // Immediately fetch joined communities to update the UI
+    dispatch(getJoinedCommunitiesAction());
+    return { success: true, data };
+  } catch (error) {
+    dispatch({
+      type: types.CREATE_COMMUNITY_FAIL,
+      payload: error.message,
+      meta: {
+        requiresAuth: true,
+      },
+    });
+    return { success: false, error: error.message };
+  }
+};

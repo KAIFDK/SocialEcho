@@ -125,3 +125,12 @@ export const unbanUser = async (communityName, userId) => {
     return handleApiError(error);
   }
 };
+
+export const createCommunity = async (communityData) => {
+  try {
+    const { data } = await COMMUNITY_API.post(`/communities/create`, communityData);
+    return { error: null, data };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};

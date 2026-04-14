@@ -1,4 +1,4 @@
-import { useMemo, useEffect, memo } from "react";
+import { useMemo, useEffect, useState, memo } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getJoinedCommunitiesAction } from "../../redux/actions/communityActions";
@@ -10,9 +10,12 @@ import {
 } from "react-icons/hi2";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { GiTeamIdea } from "react-icons/gi";
+import CreateCommunityModal from "../modals/CreateCommunityModal";
 
 const Leftbar = ({ showLeftbar }) => {
   const dispatch = useDispatch();
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const toggleCreateModal = () => setShowCreateModal(!showCreateModal);
 
   const user = useSelector((state) => state.auth?.userData);
   const joinedCommunities = useSelector(
@@ -69,6 +72,18 @@ const Leftbar = ({ showLeftbar }) => {
               <p>Following</p>
             </Link>
           )}
+
+          <button
+            onClick={toggleCreateModal}
+            className="mt-2 w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-4 py-2 font-bold text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+            </svg>
+            Create Community
+          </button>
+          
+          <CreateCommunityModal show={showCreateModal} toggle={toggleCreateModal} />
 
           <hr className="w-full my-4 border-gray-300" />
 

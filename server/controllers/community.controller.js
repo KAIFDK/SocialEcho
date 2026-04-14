@@ -44,6 +44,28 @@ const createCommunity = async (req, res) => {
   }
 };
 
+const createNewCommunity = async (req, res) => {
+  try {
+    const { name, description, banner } = req.body;
+    const existing = await Community.findOne({ name: new RegExp(`^${name}$`, 'i') });
+    if (existing) {
+      return res.status(400).json({ message: "A community with this name already exists." });
+    }
+
+    const newCommunity = new Community({
+      name,
+      description,
+      banner: banner || "https://raw.githubusercontent.com/nz-m/public-files/main/dp.jpg",
+      moderators: [req.userId],
+      members: [req.userId],
+    });
+    await newCommunity.save();
+    res.status(201).json(newCommunity);
+  } catch (error) {
+    res.status(500).json({ message: "Error creating community." });
+  }
+};
+
 const addRules = async (req, res) => {
   const rules = req.body;
   try {
@@ -512,6 +534,7 @@ module.exports = {
   getCommunities,
   getCommunity,
   createCommunity,
+  createNewCommunity,
   addRulesToCommunity,
   addRules,
   getNotMemberCommunities,

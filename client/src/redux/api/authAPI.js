@@ -15,11 +15,7 @@ export const signIn = async (formData) => {
 
 export const signUp = async (formData) => {
   try {
-    const res = await API.post("/users/signup", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const res = await API.post("/users/signup", formData);
     return { error: null, data: res.data };
   } catch (error) {
     return {

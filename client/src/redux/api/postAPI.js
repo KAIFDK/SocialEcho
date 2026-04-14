@@ -2,11 +2,7 @@ import { API, handleApiError } from "./utils";
 
 export const createPost = async (formData) => {
   try {
-    const { data } = await API.post("/posts", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const { data } = await API.post("/posts", formData);
     return { error: null, data };
   } catch (error) {
     const { response } = error;
